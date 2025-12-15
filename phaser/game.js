@@ -135,9 +135,17 @@ class GameClass extends Phaser.Scene {
 	}
 
 	loadLevel(levels_string, level_index) {
+		console.log(levels_string)
+
 		this.level = levels_string
 			.trim()
-			.split(/\r?\n\s*\r?\n/)[level_index]
+			.split(/(?:\r?\n){2,}/)
+
+		console.log(this.level)
+
+		this.level = this.level[level_index]
+
+		console.log(this.level[level_index])
 
 		for (const sprite of this.level_sprites) {
 			sprite.destroy()
