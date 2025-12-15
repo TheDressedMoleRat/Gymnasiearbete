@@ -135,17 +135,9 @@ class GameClass extends Phaser.Scene {
 	}
 
 	loadLevel(levels_string, level_index) {
-		console.log(levels_string)
-
 		this.level = levels_string
 			.trim()
-			.split(/(?:\r?\n){2,}/)
-
-		console.log(this.level)
-
-		this.level = this.level[level_index]
-
-		console.log(this.level[level_index])
+			.split(/\n\s*\n/)[level_index]
 
 		for (const sprite of this.level_sprites) {
 			sprite.destroy()
@@ -159,7 +151,7 @@ class GameClass extends Phaser.Scene {
 		} else {
 			this.level_index = level_index
 			this.level_display.setText(`Level ${level_index + 1}`)
-			this.level = this.level.trim().split('\r\n').map(row => row.split(''))
+			this.level = this.level.trim().split('\n').map(row => row.split(''))
 		}
 
 		const width = this.level[0].length
