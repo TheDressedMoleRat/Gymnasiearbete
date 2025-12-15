@@ -54,13 +54,39 @@ class Player extends GridObject {
 		super(scene, grid_x, grid_y, grid, texture)
 	}
 
-	move(move_x, move_y) {
-		this.grid_x += move_x
-		this.grid_y += move_y
+	// move(move_x, move_y) {
+	// 	this.grid_x += move_x
+	// 	this.grid_y += move_y
+	// }
+
+	async move(move_x, move_y) {
+		const target_grid_x = this._grid_x + move_x
+		const target_grid_y = this._grid_y + move_y
+
+		const target_x = target_grid_x * this.grid.cell_size + this.grid.origin_x
+		const target_y = target_grid_y * this.grid.cell_size + this.grid.origin_y
+
+		this.moving = new Promise(resolve => {
+			this.scene.tweens.add({
+				targets: this,
+				x: target_x,
+				y: target_y,
+				duration: 150,
+				ease: 'Linear',
+				onComplete: () => {
+					this._grid_x = target_grid_x
+					this._grid_y = target_grid_y
+					this.moving = null
+					resolve()
+				}
+			})
+		})
+
+		await this.moving
 	}
 
 	collide() {
-		console.log("colission :3")
+		console.log("collision :3")
 	}
 }
 
@@ -80,12 +106,14 @@ class GameClass extends Phaser.Scene {
 		this.game_grid = new Grid(100, 540, 810)
 		this.add.image(540, 810, "background")
 		this.code_area = document.getElementById("code_area")
-		this.player = new Player(this, 0, 0, this.game_grid, "cat")
 		this.level = []
+		
+		this.player = new Player(this, 0, 0, this.game_grid, "cat")
+		this.player.setDepth(1)
 
 		this.level_display = this.add.text(16, 16, '', { fontSize: '32px', fill: '#000' })
 
-		this.setLevel(2)
+		this.setLevel(1)
 	}
 
 	update() {
@@ -93,7 +121,7 @@ class GameClass extends Phaser.Scene {
 	}
 
 	setLevel(level_index) {
-		this.level_display.setText(`Level ${level_index}`)
+		this.level_display.setText(`Level ${level_index+1}`)
 
 		fetch('levels.txt')
 			.then(r => r.text())
@@ -113,27 +141,36 @@ class GameClass extends Phaser.Scene {
 		const width = level[0].length
 		const height = level.length
 
-		const x_start = -Math.floor(width / 2)
-		const y_start = -Math.floor(height / 2)
+		// I have no idea why -1/2 makes it centered but it does
+		const x_start = width / 2 - 1/2
+		const y_start = height / 2 - 1/2
 
-		for (let y = y_start; y < y_start+height; y++) {
-			for (let x = x_start; x < x_start+width; x++) {
+		this.game_grid.origin_x -= x_start * this.game_grid.cell_size
+		this.game_grid.origin_y -= y_start * this.game_grid.cell_size
+
+		for (let y = 0; y < height; y++) {
+			for (let x = 0; x < width; x++) {
 				const textures = {
 					X: 'tile',
 					A: 'start',
 					B: 'end',
 				}
 
-				console.log(`getting level[${y-y_start}][${x-x_start}]`)
-				let texture = textures[level[y-y_start][x-x_start]]
+				let texture = textures[level[y][x]]
 				this.level.push(new GridObject(this, x, y, this.game_grid, texture))
 
 				if (texture == 'start') {
-					this.player.grid_x = x
-					this.player.grid_y = y
+					this.start_tile = {x: x, y: y}
+
+					this.reset_player()
 				}
 			}
 		}
+	}
+
+	reset_player() {
+		this.player.grid_x = this.start_tile.x
+		this.player.grid_y = this.start_tile.y
 	}
 
 	runProgram() {
@@ -141,7 +178,7 @@ class GameClass extends Phaser.Scene {
 		this.execute(code_area_text.split("\n"))
 	}
 
-	execute(lines) {
+	async execute(lines) {
 		for (const line of lines) {
 			if (line.startsWith("gå")) {
 				const directions = {
@@ -154,11 +191,13 @@ class GameClass extends Phaser.Scene {
 				const move_vector = directions[line.split(" ")[1]]
 				// move_vector is falsy if input not in directions keys
 				if (move_vector) {
-					this.player.move(move_vector.x, move_vector.y)
+					await this.player.move(move_vector.x, move_vector.y)
 					this.player.collide()
 				}
 			}
 		}
+
+		this.reset_player()
 	}
 }
 
