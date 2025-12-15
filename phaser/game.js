@@ -40,11 +40,6 @@ class GridObject extends Phaser.GameObjects.Sprite {
 		return this._grid_y
 	}
 
-	move(move_x, move_y) {
-		this.grid_x += move_x
-		this.grid_y += move_y
-	}
-
 	get position() {
 		return [
 			this._grid_x * this.grid.cell_size + this.grid.origin_x,
@@ -57,6 +52,11 @@ class GridObject extends Phaser.GameObjects.Sprite {
 class Player extends GridObject {
 	constructor(scene, grid_x, grid_y, grid, texture) {
 		super(scene, grid_x, grid_y, grid, texture)
+	}
+
+	move(move_x, move_y) {
+		this.grid_x += move_x
+		this.grid_y += move_y
 	}
 
 	collide() {
@@ -110,14 +110,22 @@ class GameClass extends Phaser.Scene {
 			.split('\r\n')
 			.map(row => row.split(''))
 
-		for (let y = 0; y < level.length; y++) {
-			for (let x = 0; x < level[0].length; x++) {
+		const width = level[0].length
+		const height = level.length
+
+		const x_start = -Math.floor(width / 2)
+		const y_start = -Math.floor(height / 2)
+
+		for (let y = y_start; y < y_start+height; y++) {
+			for (let x = x_start; x < x_start+width; x++) {
 				const textures = {
 					X: 'tile',
 					A: 'start',
 					B: 'end',
 				}
-				let texture = textures[level[y][x]]
+
+				console.log(`getting level[${y-y_start}][${x-x_start}]`)
+				let texture = textures[level[y-y_start][x-x_start]]
 				this.level.push(new GridObject(this, x, y, this.game_grid, texture))
 
 				if (texture == 'start') {
