@@ -86,9 +86,9 @@ class Player extends GridObject {
 		// second index gives an error as the first part is not an array so
 		// the optional chaining operator is used
 		let current_tile = this.scene.level[this.grid_y]?.[this.grid_x]
-		
+
 		if (current_tile == "B") {
-			this.scene.setLevel(this.scene.level_index + 1)
+			return 1
 		} else if (current_tile == "." || current_tile == undefined) {
 			return -1
 		}
@@ -119,7 +119,7 @@ class GameClass extends Phaser.Scene {
 		this.level_display = this.add.text(16, 16, '', { fontSize: '100px', fill: '#000' })
 
 		this.level_sprites = []
-		this.setLevel(0)
+		this.setLevel(1)
 	}
 
 	update() {
@@ -151,10 +151,24 @@ class GameClass extends Phaser.Scene {
 		} else {
 			this.level_index = level_index
 			this.level_display.setText(`Level ${level_index + 1}`)
-			this.level = this.level.trim().split('\n').map(row => row.split(''))
+
+			this.max_lines = this.level
+				.split('\n')[0]
+				.split('/')[1]
+			
+			console.log(this.max_lines)
+
+			this.level = this.level
+				.trim()
+				.split('\n')
+				.map(row => row
+					.split('/')[0]
+					.split(''))
 		}
 
+		// width is length of first row
 		const width = this.level[0].length
+		// height is number of rows
 		const height = this.level.length
 
 		// I have no idea why -1/2 makes it centered but it does
@@ -189,35 +203,52 @@ class GameClass extends Phaser.Scene {
 		this.player.grid_y = this.start_tile.y
 	}
 
-	runProgram() {
+	async runProgram() {
 		let code_area_text = this.code_area.value
-		this.execute(code_area_text.split("\n"))
+		await this.execute(code_area_text.split("\n"))
+		this.reset_player()
 	}
 
 	async execute(lines) {
-		for (const raw_line of lines) {
-			const line = raw_line.toLowerCase().trim()
+		for (let line_index = 0; line_index < lines.length; line_index++) {
+			const line = lines[line_index].toLowerCase().trim()
 
-			if (line.startsWith("gå")) {
-				const directions = {
-					upp: { x: 0, y: -1 },
-					höger: { x: 1, y: 0 },
-					ner: { x: 0, y: 1 },
-					vänster: { x: -1, y: 0 }
-				}
+			const directions = {
+				upp: { x: 0, y: -1 },
+				höger: { x: 1, y: 0 },
+				ner: { x: 0, y: 1 },
+				vänster: { x: -1, y: 0 }
+			}
 
-				const move_vector = directions[line.split(" ")[1].toLowerCase()]
-				// move_vector is falsy if input not in directions keys
-				if (move_vector) {
-					await this.player.move(move_vector.x, move_vector.y)
-					if (this.player.collide() == -1) {
-						break
-					}
+			const move_vector = directions[line.toLowerCase()]
+			// move_vector is falsy if input not in directions keys
+			if (move_vector) {
+				await this.player.move(move_vector.x, move_vector.y)
+				let collision_return = this.player.collide() 
+				if (collision_return == -1) {
+					break
+				} else if (collision_return == 1) {
+					this.setLevel(this.level_index + 1)
+					break // ?
 				}
 			}
-		}
 
-		this.reset_player()
+			if (line.split(' ')[1] == 'gånger') {
+
+				// find all commands within the loop
+				let loop_lines = []
+				let i = 1
+				while (lines[line_index+i]?.startsWith('-')) {
+					loop_lines.push(lines[line_index + i].replace('-', ''))
+					i++
+				}
+
+				// run them "times" times
+				const times = parseInt(line.split(' ')[0])
+				let loop = Array.from({ length: times }, () => loop_lines).flat() // from ChatGPT
+				await this.execute(loop)
+			}
+		}
 	}
 }
 
