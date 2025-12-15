@@ -21,4 +21,4 @@ Studentlitteratur
 
 https://urplay.se/sok?platform[]=urplay&query=programmering
 
-V51 tisdag 16/12 9:15-10:45 
+V51 tisdag 16/12 9:15-10:45

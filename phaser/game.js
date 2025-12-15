@@ -137,7 +137,7 @@ class GameClass extends Phaser.Scene {
 	loadLevel(levels_string, level_index) {
 		this.level = levels_string
 			.trim()
-			.split(/\n\s*\n/)[level_index]
+			.split(/\r?\n\s*\r?\n/)[level_index]
 
 		for (const sprite of this.level_sprites) {
 			sprite.destroy()
@@ -146,7 +146,7 @@ class GameClass extends Phaser.Scene {
 
 		// win
 		if (this.level == undefined) {
-			this.level_display.setText('You fricking won!!!')
+			this.level_display.setText('Du vann!!!!')
 			return
 		} else {
 			this.level_index = level_index
@@ -195,7 +195,9 @@ class GameClass extends Phaser.Scene {
 	}
 
 	async execute(lines) {
-		for (const line of lines) {
+		for (const raw_line of lines) {
+			const line = raw_line.toLowerCase().trim()
+
 			if (line.startsWith("gå")) {
 				const directions = {
 					upp: { x: 0, y: -1 },
@@ -204,7 +206,7 @@ class GameClass extends Phaser.Scene {
 					vänster: { x: -1, y: 0 }
 				}
 
-				const move_vector = directions[line.split(" ")[1]]
+				const move_vector = directions[line.split(" ")[1].toLowerCase()]
 				// move_vector is falsy if input not in directions keys
 				if (move_vector) {
 					await this.player.move(move_vector.x, move_vector.y)
