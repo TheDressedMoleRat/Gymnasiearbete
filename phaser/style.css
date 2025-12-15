@@ -1,0 +1,49 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: none;
+	touch-action: manipulation;
+}
+
+#wrapper {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+}
+
+#code_area {
+	height: 100vh;
+	flex-grow: 1;
+	background-color: #272822;
+	padding: 30px;
+	font-size: 24pt;
+	color: #F8F8F2;
+	resize: none;
+	overflow: scroll;
+	box-sizing: border-box;
+}
+
+#canvas_container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
+	background: black;
+}
+
+#canvas_container canvas {
+	max-height: 100vh;
+	max-width: 50vw;
+	background-color: red;
+}
+
+button {
+	background-color: lime;
+	width: 100px;
+	height: 100px;
+	border: none;
+	border-radius: 20px;
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+}
