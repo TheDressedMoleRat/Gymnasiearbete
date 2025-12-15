@@ -1,9 +1,23 @@
 AXB
 
-.XXB
-AX..
+B
+X
+X
+A
+
+.XA
+BX.
+
+...XB
+..XX.
+.XX..
+AX...
 
 XXX.B
 X.X.X
 A.XXX
 
+.BX.
+A.XX
+XX.X
+.XXX
