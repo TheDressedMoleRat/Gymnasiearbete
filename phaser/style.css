@@ -19,7 +19,7 @@
 	flex-grow: 1;
 	background-color: #272822;
 	padding: 30px;
-	font-size: 24pt;
+	font-size: 34pt;
 	color: #F8F8F2;
 	resize: none;
 	overflow: scroll;
@@ -41,7 +41,7 @@
 }
 
 button {
-	background-color: lime;
+	background-color: #2c2;
 	color: white;
 	font-size: 30px;
 	width: 100px;

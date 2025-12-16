@@ -87,9 +87,9 @@ class Player extends GridObject {
 		// the optional chaining operator is used
 		let current_tile = this.scene.level[this.grid_y]?.[this.grid_x]
 
-		if (current_tile == "B") {
+		if (current_tile == 'B') {
 			return 1
-		} else if (current_tile == "." || current_tile == undefined) {
+		} else if (current_tile == '.' || current_tile == undefined) {
 			return -1
 		}
 	}
@@ -109,24 +109,35 @@ class GameClass extends Phaser.Scene {
 		window.GameClass = this
 
 		this.game_grid = new Grid(160, 540, 810)
-		this.add.tileSprite(540, 810, 1080, 1620, "background")
-		this.code_area = document.getElementById("code_area")
+		this.add.tileSprite(540, 810, 1080, 1620, 'background')
+		this.code_area = document.getElementById('code_area')
+		this.button = document.getElementById('run_button')
 
-		this.player = new Player(this, 0, 0, this.game_grid, "cat")
+		this.player = new Player(this, 0, 0, this.game_grid, 'cat')
 		this.player.setScale(0.8)
 		this.player.setDepth(1)
 
 		this.level_display = this.add.text(16, 16, '', { fontSize: '100px', fill: '#000' })
+		this.perfect = true
 
 		this.level_sprites = []
-		this.setLevel(1)
+		this.setLevel(0)
 	}
 
 	update() {
+		// if the number of lines (excluding empty ones) <= max_lines
+		this.under_max_lines = (
+			this.code_area.value
+				.split('\n')
+				.filter(line => (line.trim() != ""))
+				.length <= this.max_lines)
 
+		this.button.style.background = this.under_max_lines ? "#2c2" : "#f0cb03"
 	}
 
 	setLevel(level_index) {
+		this.code_area.value = ""
+
 		fetch('levels.txt')
 			.then(r => r.text())
 			.then(text => {
@@ -146,11 +157,11 @@ class GameClass extends Phaser.Scene {
 
 		// win
 		if (this.level == undefined) {
-			this.level_display.setText('Du vann!!!!')
+			this.level_display.setText(this.perfect ? 'DU ÄR BÄST!!!\n★★★★★★★' : 'Du vann :)')
 			return
 		} else {
 			this.level_index = level_index
-			this.level_display.setText(`Level ${level_index + 1}`)
+			this.level_display.setText(`${this.perfect ? '★ ' : ''}Level ${level_index + 1}`)
 
 			this.max_lines = this.level
 				.split('\n')[0]
@@ -204,8 +215,10 @@ class GameClass extends Phaser.Scene {
 	}
 
 	async runProgram() {
+		if (!this.under_max_lines) this.perfect = false
+
 		let code_area_text = this.code_area.value
-		await this.execute(code_area_text.split("\n"))
+		await this.execute(code_area_text.split('\n'))
 		this.reset_player()
 	}
 
@@ -243,7 +256,7 @@ class GameClass extends Phaser.Scene {
 					i++
 				}
 
-				// run them "times" times
+				// run them 'times' times
 				const times = parseInt(line.split(' ')[0])
 				let loop = Array.from({ length: times }, () => loop_lines).flat() // from ChatGPT
 				await this.execute(loop)

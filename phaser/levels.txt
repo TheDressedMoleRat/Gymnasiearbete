@@ -1,9 +1,18 @@
-AXB/2
+AB/1
 
-B/3
-X
+B/2
 X
 A
+
+XB/2
+A.
+
+A/2
+X
+X
+X
+X
+B
 
 .XA/3
 BX.
@@ -13,7 +22,7 @@ BX.
 .XX..
 AX...
 
-.BX./10
+.BX./8
 A.XX
 XX.X
 .XXX
