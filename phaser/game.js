@@ -102,6 +102,7 @@ class GameClass extends Phaser.Scene {
 		this.load.image('tile', 'assets/tile.png')
 		this.load.image('start', 'assets/lilypad.png')
 		this.load.image('end', 'assets/star.png')
+		this.load.image('win', 'assets/image.png')
 	}
 
 	create() {
@@ -109,7 +110,7 @@ class GameClass extends Phaser.Scene {
 		window.GameClass = this
 
 		this.game_grid = new Grid(160, 540, 810)
-		this.add.tileSprite(540, 810, 1080, 1620, 'background')
+		this.background = this.add.tileSprite(540, 810, 1080, 1620, 'background')
 		this.code_area = document.getElementById('code_area')
 		this.button = document.getElementById('run_button')
 
@@ -135,6 +136,10 @@ class GameClass extends Phaser.Scene {
 		this.button.style.background = this.under_max_lines ? "#2c2" : "#f0cb03"
 	}
 
+	updateLevelDisplay(level_index) {
+		this.level_display.setText(`${this.perfect ? '★ ' : ''}Level ${level_index + 1}`)
+	}
+
 	setLevel(level_index) {
 		this.code_area.value = ""
 
@@ -157,11 +162,16 @@ class GameClass extends Phaser.Scene {
 
 		// win
 		if (this.level == undefined) {
-			this.level_display.setText(this.perfect ? 'DU ÄR BÄST!!!\n★★★★★★★' : 'Du vann :)')
+			if (this.perfect) {
+				this.background.setTexture('win')
+				this.level_display.setText('DU ÄR BÄST!!!\n★★★★★★★')
+			} else {
+				this.level_display.setText('Du vann :)')
+			}
 			return
 		} else {
 			this.level_index = level_index
-			this.level_display.setText(`${this.perfect ? '★ ' : ''}Level ${level_index + 1}`)
+			this.updateLevelDisplay(level_index)
 
 			this.max_lines = this.level
 				.split('\n')[0]
@@ -215,7 +225,10 @@ class GameClass extends Phaser.Scene {
 	}
 
 	async runProgram() {
-		if (!this.under_max_lines) this.perfect = false
+		if (!this.under_max_lines) {
+			this.perfect = false
+			this.updateLevelDisplay(this.level_index)
+		}
 
 		let code_area_text = this.code_area.value
 		await this.execute(code_area_text.split('\n'))

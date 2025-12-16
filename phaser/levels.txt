@@ -7,7 +7,11 @@ A
 XB/2
 A.
 
+AXXXXB/2
+
 A/2
+X
+X
 X
 X
 X
@@ -22,12 +26,7 @@ BX.
 .XX..
 AX...
 
-.BX./8
-A.XX
-XX.X
-.XXX
-
-XXX.B/9
+XXX.B/10
 X.X.X
 A.XXX
 
@@ -40,3 +39,9 @@ X.X.X.X
 X.B.X.X
 X...X.X
 XXXXX.A
+
+
+.BX./8
+A.XX
+XX.X
+.XXX
