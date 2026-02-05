@@ -106,19 +106,9 @@ class GameClass extends Phaser.Scene {
 		this.load.image('win', 'assets/image.png')
 	}
 
-	resizeCodeOverlay() {
-		let code_overlay = document.getElementById('code_overlay')
-		let tutorial = document.getElementById('tutorial')
-
-		code_overlay.style.top = tutorial.offsetHeight + "px"
-		code_overlay.style.right = document.querySelector("canvas").offsetWidth + "px"
-	}
-
 	create() {
 		// for the html to be able to access runProgram()
 		window.GameClass = this
-
-		this.resizeCodeOverlay()
 
 		this.game_grid = new Grid(160, 540, 810)
 		this.background = this.add.tileSprite(540, 810, 1080, 1620, 'background')
@@ -139,7 +129,6 @@ class GameClass extends Phaser.Scene {
 	}
 
 	update() {
-		// if the number of lines (excluding empty ones) <= max_lines
 		const lines = this.code_area.value.split('\n')
 
 		// Remove the last line until the last line is not empty
@@ -157,8 +146,6 @@ class GameClass extends Phaser.Scene {
 	}
 
 	setLevel(level_index) {
-		console.log("setting level " + level_index)
-
 		this.code_area.value = ""
 
 		fetch('levels.txt')
@@ -170,12 +157,14 @@ class GameClass extends Phaser.Scene {
 
 	loadLevel(levels_string, level_index) {
 		this.level = levels_string
+			.split("§")[1]
 			.trim()
 			.split(/\n\s*\n/)[level_index]
 
 		for (const sprite of this.level_sprites) {
 			sprite.destroy()
 		}
+
 		this.level_sprites = []
 
 		// win
@@ -232,6 +221,17 @@ class GameClass extends Phaser.Scene {
 				}
 			}
 		}
+
+		this.align_line()
+	}
+
+	align_line() {
+		let line = document.getElementById("line")
+		let tutorial = document.getElementById("tutorial")
+		let top = parseInt(tutorial.offsetHeight) + 29 + this.max_lines * 60
+		line.style.top = top + "px"
+
+		line.style.width = this.code_area.offsetWidth - 40 + "px"
 	}
 
 	reset_player() {
@@ -311,7 +311,3 @@ const config = {
 }
 
 const game = new Phaser.Game(config)
-
-// onresize = (e) => GameClass.resize_code_overlay
-
-addEventListener("resize", () => window.GameClass.resizeCodeOverlay())

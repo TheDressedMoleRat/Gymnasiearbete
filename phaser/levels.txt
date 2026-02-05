@@ -11,6 +11,8 @@ A.
 Om du skriver <code>höger</code> fem gånger förlorar du stjärnan i hörnet →<br><br>För att behålla stjärnan kan du göra en loop genom att skriva <code>5 gånger</code>, och sen <code>- höger</code> (med ett bindestreck) på raden efter.
 AXXXXB
 
+§
+
 2
 Syntaxen för loopar ser ut så här: <code>X gånger</code> (fast X är en siffra), sen har alla rader som ska finnas i loopen ett bindestreck i början.
 A

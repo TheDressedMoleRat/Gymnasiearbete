@@ -37,8 +37,20 @@
 	font-size: 30px;
 }
 
+#line {
+	position: absolute;
+	background-color: #44475A;
+	height: 2px;
+	left: 20px;
+}
+
+code, #code_area {
+	background-color: #282A36;
+	color: #F8F8F2;
+	font-family: "JetBrains Mono", monospace;
+}
+
 code {
-	background-color: #272822;
 	padding: 2px 8px;
 	color: #F8F8F2;
 	border-radius: 5px;
@@ -49,28 +61,13 @@ code {
 #code_area {
 	flex-grow: 1;
 	position: relative;
-	background-color: #272822;
-	/* background-color: blue; */
-	color: #F8F8F2;
 	resize: none;
 	box-sizing: border-box;
 	outline: none;
 	width: 100%;
 	height: 100%;
-}
-
-#code_overlay, #code_area {
-	font-family: "JetBrains Mono", monospace;
 	padding: 30px;
 	font-size: 34pt;
-}
-
-#code_overlay {
-	background: #f003;
-	position: absolute;
-	bottom: 0px;
-	left: 0px;
-	pointer-events: none;
 }
 
 #canvas_container {
