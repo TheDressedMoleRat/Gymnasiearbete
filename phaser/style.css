@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Roboto:wght@100..900&display=swap');
 
 * {
 	margin: 0;
@@ -13,17 +13,64 @@
 	display: flex;
 }
 
-#code_area {
-	font-family: "JetBrains Mono", monospace;
+#left {
+	display: flex;
+	flex-direction: column;
 	height: 100vh;
 	flex-grow: 1;
-	background-color: #272822;
+	overflow: scroll;
+}
+
+#tutorial {
+	/* background-color: red; */
+	background-color: #78a158;
 	padding: 30px;
-	font-size: 34pt;
+	font-family: "Roboto";
+}
+
+#tutorial h1 {
+	font-size: 40px;
+	margin-bottom: 20px;
+}
+
+#tutorial p {
+	font-size: 30px;
+}
+
+code {
+	background-color: #272822;
+	padding: 2px 8px;
+	color: #F8F8F2;
+	border-radius: 5px;
+	margin: 0 4px;
+	white-space: nowrap;
+}
+
+#code_area {
+	flex-grow: 1;
+	position: relative;
+	background-color: #272822;
+	/* background-color: blue; */
 	color: #F8F8F2;
 	resize: none;
-	overflow: scroll;
 	box-sizing: border-box;
+	outline: none;
+	width: 100%;
+	height: 100%;
+}
+
+#code_overlay, #code_area {
+	font-family: "JetBrains Mono", monospace;
+	padding: 30px;
+	font-size: 34pt;
+}
+
+#code_overlay {
+	background: #f003;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	pointer-events: none;
 }
 
 #canvas_container {

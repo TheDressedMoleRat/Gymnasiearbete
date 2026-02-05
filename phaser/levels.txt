@@ -1,15 +1,19 @@
-AB/1
+1
+Skriv <code>höger</code> i kodfältet och tryck på den gröna knappen för att gå ett steg höger.
+AB
 
-B/2
-X
-A
-
-XB/2
+2
+Du kan använda alla fyra riktningar: <code>vänster</code>, <code>höger</code>, <code>upp</code> och <code>ner</code>.<br><br>Skriv ett kommando per rad.
+XB
 A.
 
-AXXXXB/2
+2
+Om du skriver <code>höger</code> fem gånger förlorar du stjärnan i hörnet →<br><br>För att behålla stjärnan kan du göra en loop genom att skriva <code>5 gånger</code>, och sen <code>- höger</code> (med ett bindestreck) på raden efter.
+AXXXXB
 
-A/2
+2
+Syntaxen för loopar ser ut så här: <code>X gånger</code> (fast X är en siffra), sen har alla rader som ska finnas i loopen ett bindestreck i början.
+A
 X
 X
 X
@@ -18,19 +22,28 @@ X
 X
 B
 
-.XA/3
+3
+-
+.XA
 BX.
 
-...XB/3
+3
+Beskrivning
+....B
+...XX
 ..XX.
 .XX..
 AX...
 
-XXX.B/10
+10
+Beskrivning
+XXX.B
 X.X.X
 A.XXX
 
-XXXXXXX/14
+14
+Gör loopar.
+XXXXXXX
 X.....X
 X.XXX.X
 X.X.X.X
@@ -41,7 +54,9 @@ X...X.X
 XXXXX.A
 
 
-.BX./8
+8
+Beskrivning
+.BX.
 A.XX
 XX.X
 .XXX

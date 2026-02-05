@@ -82,10 +82,11 @@ class Player extends GridObject {
 	}
 
 	collide() {
+		console.log("colliding")
 		// out of range doesn't give an error, but if y is out of bounds the
 		// second index gives an error as the first part is not an array so
 		// the optional chaining operator is used
-		let current_tile = this.scene.level[this.grid_y]?.[this.grid_x]
+		let current_tile = this.scene.level_array[this.grid_y]?.[this.grid_x]
 
 		if (current_tile == 'B') {
 			return 1
@@ -105,14 +106,26 @@ class GameClass extends Phaser.Scene {
 		this.load.image('win', 'assets/image.png')
 	}
 
+	resizeCodeOverlay() {
+		let code_overlay = document.getElementById('code_overlay')
+		let tutorial = document.getElementById('tutorial')
+
+		code_overlay.style.top = tutorial.offsetHeight + "px"
+		code_overlay.style.right = document.querySelector("canvas").offsetWidth + "px"
+	}
+
 	create() {
 		// for the html to be able to access runProgram()
 		window.GameClass = this
+
+		this.resizeCodeOverlay()
 
 		this.game_grid = new Grid(160, 540, 810)
 		this.background = this.add.tileSprite(540, 810, 1080, 1620, 'background')
 		this.code_area = document.getElementById('code_area')
 		this.button = document.getElementById('run_button')
+		this.tutorial_heading = document.getElementById('tutorial_heading')
+		this.tutorial_p = document.getElementById('tutorial_p')
 
 		this.player = new Player(this, 0, 0, this.game_grid, 'cat')
 		this.player.setScale(0.8)
@@ -127,11 +140,14 @@ class GameClass extends Phaser.Scene {
 
 	update() {
 		// if the number of lines (excluding empty ones) <= max_lines
-		this.under_max_lines = (
-			this.code_area.value
-				.split('\n')
-				.filter(line => (line.trim() != ""))
-				.length <= this.max_lines)
+		const lines = this.code_area.value.split('\n')
+
+		// Remove the last line until the last line is not empty
+		while (lines.length > 0 && lines[lines.length - 1].trim() == "") {
+			lines.pop()
+		}
+
+		this.under_max_lines = lines.length <= this.max_lines
 
 		this.button.style.background = this.under_max_lines ? "#2c2" : "#f0cb03"
 	}
@@ -141,6 +157,8 @@ class GameClass extends Phaser.Scene {
 	}
 
 	setLevel(level_index) {
+		console.log("setting level " + level_index)
+
 		this.code_area.value = ""
 
 		fetch('levels.txt')
@@ -173,24 +191,21 @@ class GameClass extends Phaser.Scene {
 			this.level_index = level_index
 			this.updateLevelDisplay(level_index)
 
-			this.max_lines = this.level
-				.split('\n')[0]
-				.split('/')[1]
-			
-			console.log(this.max_lines)
+			this.max_lines = this.level.split('\n')[0]
+			this.tutorial_p.innerHTML = this.level.split('\n')[1]
 
-			this.level = this.level
+			this.level_array = this.level
 				.trim()
 				.split('\n')
+				.slice(2)
 				.map(row => row
-					.split('/')[0]
 					.split(''))
 		}
 
 		// width is length of first row
-		const width = this.level[0].length
+		const width = this.level_array[0].length
 		// height is number of rows
-		const height = this.level.length
+		const height = this.level_array.length
 
 		// I have no idea why -1/2 makes it centered but it does
 		const x_offset = width / 2 - 1/2
@@ -207,7 +222,7 @@ class GameClass extends Phaser.Scene {
 					B: 'end',
 				}
 
-				let texture = textures[this.level[y][x]]
+				let texture = textures[this.level_array[y][x]]
 				this.level_sprites.push(new GridObject(this, x, y, this.game_grid, texture))
 
 				if (texture == 'start') {
@@ -247,20 +262,20 @@ class GameClass extends Phaser.Scene {
 			}
 
 			const move_vector = directions[line.toLowerCase()]
+
 			// move_vector is falsy if input not in directions keys
 			if (move_vector) {
 				await this.player.move(move_vector.x, move_vector.y)
 				let collision_return = this.player.collide() 
-				if (collision_return == -1) {
-					break
-				} else if (collision_return == 1) {
+				if (collision_return == -1) { // in water
+					return -1
+				} else if (collision_return == 1) { // on goal
 					this.setLevel(this.level_index + 1)
 					break // ?
 				}
 			}
 
 			if (line.split(' ')[1] == 'gånger') {
-
 				// find all commands within the loop
 				let loop_lines = []
 				let i = 1
@@ -272,10 +287,12 @@ class GameClass extends Phaser.Scene {
 				// run them 'times' times
 				const times = parseInt(line.split(' ')[0])
 				let loop = Array.from({ length: times }, () => loop_lines).flat() // from ChatGPT
-				await this.execute(loop)
+				// return if the loop ends with a collision
+				let loop_result = await this.execute(loop)
+				if (loop_result == -1) return;
 			}
 		}
-	}
+	}o
 }
 
 const config = {
@@ -295,4 +312,6 @@ const config = {
 
 const game = new Phaser.Game(config)
 
-window.GameClass = GameClass
+// onresize = (e) => GameClass.resize_code_overlay
+
+addEventListener("resize", () => window.GameClass.resizeCodeOverlay())
