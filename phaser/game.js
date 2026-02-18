@@ -143,6 +143,7 @@ class GameClass extends Phaser.Scene {
 
 	updateLevelDisplay(level_index) {
 		this.level_display.setText(`${this.perfect ? '★ ' : ''}Level ${level_index + 1}`)
+		this.tutorial_heading.textContent = `Level ${level_index + 1}`
 	}
 
 	setLevel(level_index) {
@@ -292,7 +293,7 @@ class GameClass extends Phaser.Scene {
 				if (loop_result == -1) return;
 			}
 		}
-	}o
+	}
 }
 
 const config = {
@@ -311,3 +312,4 @@ const config = {
 }
 
 const game = new Phaser.Game(config)
+
