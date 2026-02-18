@@ -81,6 +81,7 @@ class Player extends GridObject {
 		})
 	}
 
+	// returns true 
 	collide() {
 		console.log("colliding")
 		// out of range doesn't give an error, but if y is out of bounds the
@@ -121,7 +122,7 @@ class GameClass extends Phaser.Scene {
 		this.player.setScale(0.8)
 		this.player.setDepth(1)
 
-		this.level_display = this.add.text(16, 16, '', { fontSize: '100px', fill: '#000' })
+		this.level_display = this.add.text(16, 16, '', { fontSize: '100px', fill: '#000', fontFamily: 'Roboto, sans-serif'})
 		this.perfect = true
 
 		this.level_sprites = []
@@ -142,7 +143,7 @@ class GameClass extends Phaser.Scene {
 	}
 
 	updateLevelDisplay(level_index) {
-		this.level_display.setText(`${this.perfect ? '★ ' : ''}Level ${level_index + 1}`)
+		this.level_display.setText(this.perfect ? '★ ' : '')
 		this.tutorial_heading.textContent = `Level ${level_index + 1}`
 	}
 
@@ -248,6 +249,11 @@ class GameClass extends Phaser.Scene {
 
 		let code_area_text = this.code_area.value
 		await this.execute(code_area_text.split('\n'))
+
+		if (this.player.collide() == 1) {
+			this.setLevel(this.level_index + 1)
+		}
+
 		this.reset_player()
 	}
 
@@ -270,9 +276,6 @@ class GameClass extends Phaser.Scene {
 				let collision_return = this.player.collide() 
 				if (collision_return == -1) { // in water
 					return -1
-				} else if (collision_return == 1) { // on goal
-					this.setLevel(this.level_index + 1)
-					break // ?
 				}
 			}
 
@@ -313,3 +316,4 @@ const config = {
 
 const game = new Phaser.Game(config)
 
+onresize = () => { window.GameClass.align_line() }
