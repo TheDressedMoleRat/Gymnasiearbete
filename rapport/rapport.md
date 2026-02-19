@@ -1,4 +1,5 @@
-# Pedagogiskt spel för att lära ut textbaserad programmering till mellanstadieelever
+Pedagogiskt spel för att lära ut textbaserad programmering till mellanstadieelever
+==============================================================================
 
 ## Inledning
 

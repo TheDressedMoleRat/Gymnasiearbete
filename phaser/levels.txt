@@ -1,20 +1,22 @@
-§
 
 1
-Skriv <code>höger</code> i kodfältet och tryck på den gröna knappen för att gå ett steg höger.
+Välkommen! I det här spelet ska du få den här katten till höger att gå till målet i varje bana, genom att skriva kommandon i kodfältet till vänster. Om du skriver kod som hamnar under strecket i kodrutan förlorar du stjärnan i hörnet, men du kan fortfarande klara banorna!<br><br>Skriv <code>höger</code> i kodfältet och tryck på den gröna knappen för att gå ett steg höger.
 AB
+
 
 2
 Du kan använda alla fyra riktningar: <code>vänster</code>, <code>höger</code>, <code>upp</code> och <code>ner</code>.<br><br>Skriv ett kommando per rad.
 XB
 A.
-§
-2
-Om du skriver <code>höger</code> fem gånger hamnar du under strecket i kodrutan. Om du trycker på knappen då kommer du förlora stjärnan i hörnet!<br><br>För att behålla stjärnan kan du göra en loop genom att skriva <code>5 gånger</code>, och sen <code>- höger</code> (med ett bindestreck) på raden efter.
-AXXXXB
+
 
 2
-Syntaxen för loopar ser ut så här: <code>X gånger</code> (fast X är en siffra), sen har alla rader som ska finnas i loopen ett bindestreck i början: <code>- höger</code>
+Om du skriver <code>höger</code> fem gånger hamnar du under strecket i kodrutan. Om du trycker på knappen så kommer du förlora stjärnan i hörnet!<br><br>För att behålla stjärnan kan du göra en loop genom att skriva <code>5 gånger</code>, och sen <code>- höger</code> (med ett bindestreck) på raden efter.
+AXXXXB
+
+
+2
+För att börja en loop gör du alltså så här: <code>X gånger</code> (fast X är en siffra). Sen har alla rader som ska inkluderas i loopen ett bindestreck i början: <code>- höger</code><br><br>Programmet måste ta slut när katten är på den röda stjärnan för att du ska klara banan, den får inte gå för långt eller för kort.
 A
 X
 X
@@ -24,36 +26,29 @@ X
 X
 B
 
+
 3
--
+Här behövs inga loopar.
 .XA
 BX.
 
+
 3
-Beskrivning
+Kom ihåg, varje rad i en loop har ett bindestreck i början, till exempel <code>- ner</code> eller <code>- vänster</code>.
 ....B
 ...XX
 ..XX.
 .XX..
 AX...
 
-10
-Beskrivning
-XXX.B
-X.X.X
-A.XXX
+§
 
-14
-Gör loopar.
-XXXXXXX
-X.....X
-X.XXX.X
-X.X.X.X
-X.X.X.X
-X.X.X.X
-X.B.X.X
-X...X.X
-XXXXX.A
+6
+Beskrivning
+XXXX
+X..X
+X..X
+A..B
 
 
 8
