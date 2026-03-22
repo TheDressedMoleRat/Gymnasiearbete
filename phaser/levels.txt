@@ -1,6 +1,6 @@
-
+§
 1
-Välkommen! I det här spelet ska du få den här katten till höger att gå till målet i varje bana, genom att skriva kommandon i kodfältet till vänster. Om du skriver kod som hamnar under strecket i kodrutan förlorar du stjärnan i hörnet, men du kan fortfarande klara banorna!<br><br>Skriv <code>höger</code> i kodfältet och tryck på den gröna knappen för att gå ett steg höger.
+Välkommen! I det här spelet ska du få den här katten till höger att gå till målet i varje bana, genom att skriva kommandon i kodfältet till vänster. Om du skriver kod som hamnar under strecket i kodrutan förlorar du stjärnan i hörnet. Du kan fortfarande vinna, men du får inte det speciella slutet!<br><br>Skriv <code>höger</code> i kodfältet och tryck på den gröna knappen för att gå ett steg höger.
 AB
 
 
@@ -28,7 +28,7 @@ B
 
 
 3
-Här behövs inga loopar.
+Den här kanske är lite lättare :)
 .XA
 BX.
 
@@ -41,10 +41,9 @@ Kom ihåg, varje rad i en loop har ett bindestreck i början, till exempel <code
 .XX..
 AX...
 
-§
 
 6
-Beskrivning
+Ska man gå tre steg kan man spara en rad om man använder en loop!
 XXXX
 X..X
 X..X
@@ -52,7 +51,7 @@ A..B
 
 
 8
-Beskrivning
+Här kan det vara svårt att hamna under gränsen, men det går!
 .BX.
 A.XX
 XX.X

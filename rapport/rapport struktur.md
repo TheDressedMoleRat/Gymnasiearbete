@@ -32,11 +32,13 @@ Varför har du valt metoden?
 - Objektivt, ej jag-form
 
 ## Resultat
+- Koppla till kravspec
 - Hur blev resultatet?
 - Redovisa sakligt, ej jag-form
 - Text, diagram mm
 
 ## Diskussion
+- Koppla till resultat
 - Analysera ditt resultat?
 - Subjektivt
 - Hur har det gått?

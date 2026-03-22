@@ -22,3 +22,9 @@ Studentlitteratur
 https://urplay.se/sok?platform[]=urplay&query=programmering
 
 V51 tisdag 16/12 9:15-10:45
+
+## Generella tips 5/3-26
+- Mallen, man måste följa den
+- Man måste ha referenser så klart
+- Målgruppen, läsaren, kan tänkas vara en person på teknikprogrammet, men som inte har specialkunskaper
+- Man ska ha figurer och bilder, så slipper man skriva så mycket

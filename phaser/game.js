@@ -190,6 +190,7 @@ class GameClass extends Phaser.Scene {
 				.split('\n')
 				.slice(2)
 				.map(row => row
+					.trim()
 					.split(''))
 		}
 
@@ -198,7 +199,7 @@ class GameClass extends Phaser.Scene {
 		// height is number of rows
 		const height = this.level_array.length
 
-		// I have no idea why -1/2 makes it centered but it does
+		// The constant term -1/2 was found through trial and error
 		const x_offset = width / 2 - 1/2
 		const y_offset = height / 2 - 1/2
 
