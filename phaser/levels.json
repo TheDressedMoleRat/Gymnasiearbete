@@ -76,7 +76,7 @@
 	},
 	"9": {
 		"max_lines": 8,
-		"description": "Det här är den sista banan, och den svåraste banan!",
+		"description": "Det här är den sista och svåraste banan!",
 		"map": [
 			"BX..",
 			".X..",

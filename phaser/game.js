@@ -1,4 +1,6 @@
 class Grid {
+	// base_origin denotes the pixel coordinates of the grid's origin before offset
+	// origin denotes the origin's pixel coordinates after the level has been panned
 	constructor(cell_size, origin_x, origin_y) {
 		this.cell_size = cell_size
 		this.origin_x = origin_x
@@ -122,7 +124,10 @@ class GameClass extends Phaser.Scene {
 		this.player.setScale(0.8)
 		this.player.setDepth(1)
 
-		this.level_display = this.add.text(16, 16, '', { fontSize: '100px', fill: '#000', fontFamily: 'Roboto, sans-serif'})
+		this.level_display = this.add.text(16, 16, '', {
+			fontSize: '100px', fill: '#000', fontFamily: 'Roboto, sans-serif'
+		})
+
 		this.perfect = true
 
 		this.level_sprites = []
@@ -267,7 +272,7 @@ class GameClass extends Phaser.Scene {
 				await this.player.move(move_vector.x, move_vector.y)
 				let collision_return = this.player.collide() 
 				if (collision_return == -1) { // in water
-					return
+					return -1
 				}
 			}
 
@@ -282,7 +287,9 @@ class GameClass extends Phaser.Scene {
 
 				// run them 'times' times
 				const times = parseInt(line.split(' ')[0])
-				let loop = Array.from({ length: times }, () => loop_lines).flat() // repeats the array, source: ChatGPT
+
+				// repeats the array, source: ChatGPT
+				let loop = Array.from({ length: times }, () => loop_lines).flat() 
 				// return if the loop ends with a collision
 				let loop_result = await this.execute(loop)
 				if (loop_result == -1) return
