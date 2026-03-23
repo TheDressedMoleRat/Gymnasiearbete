@@ -4,7 +4,7 @@
 	margin: 0;
 	padding: 0;
 	border: none;
-	touch-action: manipulation;
+	touch-action: manipulation; /* Allows pinch to zoom */
 }
 
 #wrapper {
@@ -22,7 +22,6 @@
 }
 
 #tutorial {
-	/* background-color: red; */
 	background-color: #78a158;
 	padding: 30px;
 	font-family: "Roboto";
@@ -68,20 +67,6 @@ code {
 	height: 100%;
 	padding: 30px;
 	font-size: 34pt;
-}
-
-#canvas_container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-grow: 1;
-	background: black;
-}
-
-#canvas_container canvas {
-	max-height: 100vh;
-	max-width: 50vw;
-	background-color: red;
 }
 
 button {
